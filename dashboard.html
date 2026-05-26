@@ -1038,17 +1038,28 @@
             localStorage.setItem('dp_products', JSON.stringify(state.products));
             localStorage.setItem('dp_templates', JSON.stringify(state.templates));
             localStorage.setItem('dp_ledger', JSON.stringify(state.ledger));
+            
+            // Re-render UI now that new data has been successfully fetched
+            if (typeof currentTab !== 'undefined' && currentTab) {
+              loadTabContent(currentTab);
+            }
           }
         } else {
           // API has no state yet, load from localStorage seed
           loadStateFromLocalStorage();
           // Push localStorage seed to the API so other devices can see it
           saveState();
+          if (typeof currentTab !== 'undefined' && currentTab) {
+            loadTabContent(currentTab);
+          }
         }
       })
       .catch(() => {
         // API unreachable, use localStorage
         loadStateFromLocalStorage();
+        if (typeof currentTab !== 'undefined' && currentTab) {
+          loadTabContent(currentTab);
+        }
       });
   }
 
@@ -1225,7 +1236,6 @@
 
   // Load Tab-specific updates
   function loadTabContent(tabId) {
-    loadState();
     
     if (tabId === 'supermarket_overview') {
       loadSupermarketDashboard();

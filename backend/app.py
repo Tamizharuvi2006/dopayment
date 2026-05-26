@@ -9,7 +9,7 @@ from extensions import db
 FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 def create_app():
-    app = Flask(__name__, static_folder=FRONTEND_DIR, static_url_path='')
+    app = Flask(__name__)
     db_path = os.path.join(app.instance_path, 'dopayments.db')
     os.makedirs(app.instance_path, exist_ok=True)
     app.config['SECRET_KEY'] = 'dopayments-secret-2024'
@@ -43,14 +43,23 @@ def create_app():
     app.register_blueprint(core_cashflow_bp, url_prefix='/api')
     app.register_blueprint(state_sync_bp, url_prefix='/api')
 
-    # --- Serve frontend HTML pages ---
+    # --- Serve frontend HTML pages and assets explicitly ---
     @app.route('/')
+    @app.route('/index.html')
     def serve_index():
         return send_from_directory(FRONTEND_DIR, 'index.html')
 
     @app.route('/dashboard.html')
     def serve_dashboard():
         return send_from_directory(FRONTEND_DIR, 'dashboard.html')
+
+    @app.route('/assets/<path:filename>')
+    def serve_assets(filename):
+        return send_from_directory(os.path.join(FRONTEND_DIR, 'assets'), filename)
+
+    @app.route('/modules/<path:filename>')
+    def serve_modules(filename):
+        return send_from_directory(os.path.join(FRONTEND_DIR, 'modules'), filename)
 
     with app.app_context():
         db.create_all()
