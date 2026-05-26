@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DoPayments — Smart Business Intelligence Platform</title>
+  <meta name="description" content="Intelligent Business Management System for Retailers, Distributors and Manufacturers. Stock, Sales, Credit, and Financial Planning in one platform." />
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <style>
+    body { background: var(--bg); overflow-x: hidden; }
+
+    /* Particles canvas */
+    #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+    /* Hero layout */
+    .hero {
+      min-height: 100vh; display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr); position: relative; z-index: 1;
+    }
+
+    /* Left brand panel */
+    .hero-brand {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 60px 64px; position: relative;
+    }
+    .brand-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 16px; border-radius: 20px;
+      background: rgba(225,29,72,0.1); border: 1px solid rgba(225,29,72,0.25);
+      font-size: 12px; font-weight: 600; color: var(--primary);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 28px; width: fit-content;
+    }
+    .brand-badge::before { content: '●'; font-size: 8px; animation: pulse 2s infinite; }
+
+    .hero-logo {
+      display: flex; align-items: center; gap: 16px; margin-bottom: 28px;
+    }
+    .hero-logo-mark {
+      width: 76px; height: 76px; border-radius: 10px;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 800;
+      font-size: 22px; color: white; box-shadow: 0 14px 34px -24px rgba(15,23,42,0.5);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .hero-logo-mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .hero-logo-text {
+      font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 800;
+      color: var(--secondary);
+    }
+
+    .hero-h1 {
+      font-size: 48px; font-weight: 700; line-height: 1.15;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .hero-h1 .highlight {
+      color: var(--secondary);
+    }
+    .hero-desc {
+      font-size: 16px; color: var(--text-muted); line-height: 1.7;
+      max-width: 480px; margin-bottom: 40px;
+    }
+
+    .hero-stats {
+      display: flex; gap: 32px; margin-bottom: 40px;
+    }
+    .stat-item { display: flex; flex-direction: column; }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700;
+      color: var(--secondary);
+    }
+    .stat-lbl { font-size: 12px; color: var(--text-muted); }
+
+    .hero-features { display: flex; flex-direction: column; gap: 12px; }
+    .feature-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; color: var(--text-muted);
+    }
+    .feature-item .fi-icon {
+      width: 26px; height: 26px; border-radius: 7px;
+      background: var(--gradient-brand); display: flex; align-items: center;
+      justify-content: center; font-size: 13px; flex-shrink: 0;
+    }
+
+    /* Right login panel */
+    .hero-login {
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px; position: relative;
+    }
+    .hero-login::before {
+      content: ''; position: absolute; top: 0; left: 0; bottom: 0;
+      width: 1px; background: linear-gradient(to bottom, transparent, var(--border), transparent);
+    }
+
+    .login-card {
+      width: 100%; max-width: 480px;
+      background: rgba(255,255,255,0.98);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 32px;
+      box-shadow: 0 24px 60px -40px rgba(15,23,42,0.55);
+    }
+    .login-header { text-align: center; margin-bottom: 24px; }
+    .login-title { font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+    .login-sub { font-size: 14px; color: var(--text-muted); }
+
+    .role-cards {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .role-card-item {
+      display: flex; align-items: center; gap: 16px; padding: 14px 18px;
+      border: 1px solid var(--border); border-radius: 10px;
+      background: var(--bg-card); cursor: pointer;
+      transition: var(--transition); position: relative;
+    }
+    .role-card-item:hover {
+      transform: translateY(-2px); border-color: var(--secondary);
+      box-shadow: var(--shadow-glow); background: rgba(79, 70, 229, 0.02);
+    }
+    .role-card-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; background: var(--bg-card2);
+      border: 1px solid var(--border); transition: var(--transition);
+    }
+    .role-card-item:hover .role-card-icon {
+      background: var(--secondary); color: white; border-color: var(--secondary);
+    }
+    .role-card-info {
+      flex: 1; text-align: left;
+    }
+    .role-card-title {
+      font-size: 14px; font-weight: 700; color: var(--text);
+    }
+    .role-card-desc {
+      font-size: 11px; color: var(--text-dim); margin-top: 2px;
+    }
+    .role-card-arrow {
+      font-size: 16px; color: var(--text-dim); transition: var(--transition);
+    }
+    .role-card-item:hover .role-card-arrow {
+      color: var(--secondary); transform: translateX(3px);
+    }
+
+    @media (max-width: 920px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-brand { padding: 42px 22px 24px; }
+      .hero-login { padding: 24px 22px 42px; }
+      .hero-login::before { display: none; }
+      .hero-h1 { font-size: 34px; }
+      .hero-stats { gap: 18px; flex-wrap: wrap; }
+      .login-card { max-width: 520px; padding: 24px; }
+    }
+
+    @media (max-width: 520px) {
+      .hero-logo-text { font-size: 28px; }
+      .hero-h1 { font-size: 30px; }
+      .login-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+
+<div class="hero">
+  <!-- Left Brand Panel -->
+  <div class="hero-brand">
+    <div class="brand-badge">Supply Chain Instant Settlements</div>
+
+    <div class="hero-logo">
+      <div class="hero-logo-mark"><img src="assets/logo.jpeg" alt="Do Payment logo" /></div>
+      <div class="hero-logo-text">DoPayments</div>
+    </div>
+
+    <h1 class="hero-h1">
+      Instant <span class="highlight">Auto-Split</span> Payments for Supply Chains
+    </h1>
+    <p class="hero-desc">
+      Empower supermarkets, service providers, distributors, and stockists with real-time checkout split routing. Automate payments directly from customers to the entire supply chain.
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">Type 1</span>
+        <span class="stat-lbl">Scanner / Billing Auto-Split</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">Type 2</span>
+        <span class="stat-lbl">No Billing / Service Split</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">Instant</span>
+        <span class="stat-lbl">Supply Chain Payouts</span>
+      </div>
+    </div>
+
+    <div class="hero-features">
+      <div class="feature-item"><div class="fi-icon">🏪</div> Supermarket product-margin scanner split</div>
+      <div class="feature-item"><div class="fi-icon">🛠️</div> Service business template split sliders</div>
+      <div class="feature-item"><div class="fi-icon">🚚</div> Distributor automated forward routing</div>
+      <div class="feature-item"><div class="fi-icon">🏭</div> Super Stockist direct ledger tracking</div>
+    </div>
+  </div>
+
+  <!-- Right Login Panel -->
+  <div class="hero-login">
+    <div class="login-card fade-in">
+      <div class="login-header">
+        <div class="login-title">Select Business Role 🚀</div>
+        <div class="login-sub">No credentials required. Click any role to access the workspace.</div>
+      </div>
+
+      <div class="role-cards">
+        <div class="role-card-item" data-role="retailer_supermarket" onclick="loginAs('retailer_supermarket')">
+          <div class="role-card-icon">🏪</div>
+          <div class="role-card-info">
+            <div class="role-card-title">Supermarket Retailer</div>
+            <div class="role-card-desc">Type 1: Billing & Scanner Auto-Split</div>
+          </div>
+          <div class="role-card-arrow">→</div>
+        </div>
+
+        <div class="role-card-item" data-role="retailer_service" onclick="loginAs('retailer_service')">
+          <div class="role-card-icon">🛠️</div>
+          <div class="role-card-info">
+            <div class="role-card-title">Service Retailer (No Billing)</div>
+            <div class="role-card-desc">Type 2: Customer Manual/Template Split</div>
+          </div>
+          <div class="role-card-arrow">→</div>
+        </div>
+
+        <div class="role-card-item" data-role="distributor" onclick="loginAs('distributor')">
+          <div class="role-card-icon">🚚</div>
+          <div class="role-card-info">
+            <div class="role-card-title">Distributor (Middle Tier)</div>
+            <div class="role-card-desc">Receive splits and route to Super Stockists</div>
+          </div>
+          <div class="role-card-arrow">→</div>
+        </div>
+
+        <div class="role-card-item" data-role="super_stockist" onclick="loginAs('super_stockist')">
+          <div class="role-card-icon">🏭</div>
+          <div class="role-card-info">
+            <div class="role-card-title">Super Stockist / Supplier</div>
+            <div class="role-card-desc">Top Tier: Manage cash flow ledger</div>
+          </div>
+          <div class="role-card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Particle system
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W = canvas.width = window.innerWidth;
+  let H = canvas.height = window.innerHeight;
+  window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
+
+  const COLORS = ['#E11D48', '#4F46E5', '#2563EB'];
+  const particles = Array.from({ length: 60 }, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    r: Math.random() * 1.5 + 0.5,
+    vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    alpha: Math.random() * 0.4 + 0.3
+  }));
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + Math.round(p.alpha * 255).toString(16).padStart(2,'0');
+      ctx.fill();
+    });
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(79,70,229,${0.15 * (1 - dist/120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  function loginAs(role) {
+    const roles = {
+      retailer_supermarket: { id: 1, name: 'Supermarket Retailer', role: 'retailer_supermarket', email: 'supermarket@dopayments.com' },
+      retailer_service: { id: 2, name: 'Service Retailer', role: 'retailer_service', email: 'service@dopayments.com' },
+      distributor: { id: 3, name: 'Distributor', role: 'distributor', email: 'distributor@dopayments.com' },
+      super_stockist: { id: 4, name: 'Super Stockist', role: 'super_stockist', email: 'stockist@dopayments.com' }
+    };
+    
+    const user = roles[role];
+    if (user) {
+      localStorage.setItem('dp_user', JSON.stringify(user));
+      window.initializeSharedState();
+      
+      const card = document.querySelector(`[data-role="${role}"]`);
+      if (card) {
+        card.style.background = 'rgba(79, 70, 229, 0.08)';
+        card.style.borderColor = 'var(--secondary)';
+        const arrow = card.querySelector('.role-card-arrow');
+        if (arrow) arrow.innerHTML = '✨';
+      }
+      
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 400);
+    }
+  }
+</script>
+<script src="assets/js/app-shell.js"></script>
+<script src="assets/js/pro-icons.js"></script>
+</body>
+</html>
+
