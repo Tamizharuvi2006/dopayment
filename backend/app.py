@@ -1,12 +1,9 @@
-from flask import Flask, send_from_directory
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
 
 from extensions import db
-
-# The frontend lives one directory above the backend folder
-FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 def create_app():
     app = Flask(__name__)
@@ -29,7 +26,6 @@ def create_app():
     from routes.auth import auth_bp
     from routes.communication import communication_bp
     from routes.core_cashflow import core_cashflow_bp
-    from routes.state_sync import state_sync_bp
 
     app.register_blueprint(auth_bp, url_prefix='/api')
     app.register_blueprint(retailer_bp, url_prefix='/api')
@@ -41,25 +37,6 @@ def create_app():
     app.register_blueprint(dashboard_bp, url_prefix='/api')
     app.register_blueprint(communication_bp, url_prefix='/api')
     app.register_blueprint(core_cashflow_bp, url_prefix='/api')
-    app.register_blueprint(state_sync_bp, url_prefix='/api')
-
-    # --- Serve frontend HTML pages and assets explicitly ---
-    @app.route('/')
-    @app.route('/index.html')
-    def serve_index():
-        return send_from_directory(FRONTEND_DIR, 'index.html')
-
-    @app.route('/dashboard.html')
-    def serve_dashboard():
-        return send_from_directory(FRONTEND_DIR, 'dashboard.html')
-
-    @app.route('/assets/<path:filename>')
-    def serve_assets(filename):
-        return send_from_directory(os.path.join(FRONTEND_DIR, 'assets'), filename)
-
-    @app.route('/modules/<path:filename>')
-    def serve_modules(filename):
-        return send_from_directory(os.path.join(FRONTEND_DIR, 'modules'), filename)
 
     with app.app_context():
         db.create_all()
@@ -72,8 +49,6 @@ def create_app():
 
     return app
 
-# Gunicorn entry point
-app = create_app()
-
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app = create_app()
+    app.run(debug=True, port=5000)
